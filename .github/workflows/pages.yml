@@ -7,7 +7,7 @@ jobs:
     env:
       # Si vous avez appelé le dépôt commun autrement que "nos-recettes",
       # ce chemin doit être modifié pour utiliser le bon nom de dépôt.
-      BASE_URL: "/nos-recettes"
+      BASE_URL: "/nos-super-recettes"
     steps:
       - name: Check out git repository
         uses: actions/checkout@v5
