@@ -13,7 +13,7 @@ favori: true
 coût: "€"
 tags:
   - rapide
-image: null
+image: "OeufsAuPlat.jpeg"
 ingredients:
   - "2 œufs voire 3 pour les gourmands"
   - "une noisette de beurre"
