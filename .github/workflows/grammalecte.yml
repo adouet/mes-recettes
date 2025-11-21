@@ -1,5 +1,5 @@
 name: "Vérification grammaire/orthographe"
-on: push
+on: [push, pull_request]
 jobs:
   grammaire_et_orthographe:
     runs-on: ubuntu-latest
