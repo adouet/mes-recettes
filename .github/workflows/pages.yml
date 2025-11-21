@@ -1,0 +1,41 @@
+name: "Déploiement continu"
+on: [push, pull_request]
+jobs:
+  build_pages:
+    runs-on: ubuntu-latest
+    container: docker://gitlab-registry.in2p3.fr/sonny.lion/astro-chef:1.1.2
+    env:
+      # Si vous avez appelé le dépôt commun autrement que "nos-recettes",
+      # ce chemin doit être modifié pour utiliser le bon nom de dépôt.
+      BASE_URL: "/nos-recettes"
+    steps:
+      - name: Check out git repository
+        uses: actions/checkout@v5
+      - name: Build the static website
+        run: |
+          # On déplace les recettes à l'endroit attendu par astro-chef
+          cp -r ./recettes $APP_DIR/recettes
+          # On génère les pages HTML avec astro-chef
+          (cd $APP_DIR && yarn build)
+          # On ramène ces pages à un endroit où le runner GitHub peut les voir
+          mv $APP_DIR/dist .
+      - name: Generate and upload the artifact
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: dist/jobs:
+  # … définition de build_pages …
+  deploy_pages:
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' }}
+    needs: build_pages
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.pages.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: pages
+        uses: actions/deploy-pages@v4
+
