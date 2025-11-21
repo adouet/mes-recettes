@@ -1,0 +1,13 @@
+name: "Vérification grammaire/orthographe"
+on: push
+jobs:
+  grammaire_et_orthographe:
+    runs-on: ubuntu-latest
+    container: python:3.12
+    steps:
+      - name: Installation de grammalint
+        run: python -m pip install git+https://gitlab.in2p3.fr/sonny.lion/grammalint.git
+      - name: Extraction des fichiers
+        uses: actions/checkout@v5
+      - name: Exécution de grammalint
+        run: python -m grammalint -i recettes/**/*.md
